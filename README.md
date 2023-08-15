@@ -1,4 +1,4 @@
-# [Language-Table [Lynch+ 2023]](https://github.com/google-research/language-table)　を使いたい
+# [Language-Table [Lynch+ 2023]](https://github.com/google-research/language-table) を使いたい
 
 ![python](https://img.shields.io/badge/python-3.10-blue)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
@@ -36,7 +36,7 @@ This project uses code/dataset from [Language-Table](https://github.com/google-r
 ## `tfrecord` を単一の `np.array` に変換
 
 ```sh
-python src/language_table_process/main.py \
+python language_table_dev/main.py \
     --min_len 20 \
     --max_len 100 \
     --factor 0.1
