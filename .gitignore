@@ -1,0 +1,10 @@
+**/.venv/*
+**/.ruff_cache/*
+**/.mypy_cache/*
+**/language-table/*
+**/__pycache__/*
+
+*.json
+*.tfrecord-*
+*.gif
+*.npy
