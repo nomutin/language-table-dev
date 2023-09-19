@@ -12,4 +12,7 @@ download:
 lint:
 	poetry run black . && poetry run isort . && poetry run ruff --fix . && poetry run mypy .
 
-.PHONY: download lint setup
+run:
+	poetry run python language_table_dev/main.py
+
+.PHONY: download lint setup run

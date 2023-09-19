@@ -33,17 +33,9 @@ This project uses code/dataset from [Language-Table](https://github.com/google-r
     make setup
     ```
 
-## `tfrecord` を単一の `np.array` に変換
+
+## 実行
 
 ```sh
-python language_table_dev/main.py \
-    --min_len 20 \
-    --max_len 100 \
-    --factor 0.1
+make run
 ```
-
-### パラメータ
-
-- `min_len` この長さ以下のシーケンスはデータセットに含まない.
-- `max_len` この長さ以上のシーケンスはデータセットに含まない.全てのシーケンスはこの長さに padding される.
-- `factor` 画像(360,640)を何倍して保存するか.
