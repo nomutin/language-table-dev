@@ -10,6 +10,6 @@ download:
 		.
 
 lint:
-	black . && isort . && ruff --fix .
+	poetry run black . && poetry run isort . && poetry run ruff --fix . && poetry run mypy .
 
 .PHONY: download lint setup
