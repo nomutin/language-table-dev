@@ -9,4 +9,4 @@
 *.gif
 *.npy
 .DS_Store
-
+*.pt
