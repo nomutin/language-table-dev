@@ -1,51 +1,87 @@
-[tool.poetry]
+[project]
 name = "language-table-dev"
 version = "0.1.0"
 description = ""
-authors = ["nomutin <nomura0508@icloud.com>"]
+authors = [
+    { name = "nomutin", email = "nomura0508@icloud.com" }
+]
+dependencies = [
+    "torch>=2.2.1",
+    "torchvision>=0.17.1",
+    "tensorflow-datasets>=4.9.4",
+    "tensorflow>=2.15.0",
+]
 readme = "README.md"
-packages = [
-	{ include = "language_table_dev" },
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "black>=24.2.0",
+    "isort>=5.13.2",
+    "mypy>=1.8.0",
+    "pre-commit>=3.6.2",
+    "ruff>=0.3.1",
 ]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<3.12"
-tensorflow-datasets = "^4.9.2"
-tensorflow-macos = "^2.13.0"
-einops = "^0.6.1"
-natsort = "^8.4.0"
-torch = "^2.0.1"
-torchvision = "^0.15.2"
+[tool.hatch.metadata]
+allow-direct-references = true
 
-[tool.poetry.group.lint]
-optional = true
-[tool.poetry.group.lint.dependencies]
-ruff = "^0.0.284"
-isort = "^5.12.0"
-black = "^23.7.0"
-mypy = "^1.5.0"
+[tool.hatch.build.targets.wheel]
+packages = ["src/language_table_dev"]
 
 [tool.black]
 line-length = 79
 
+[tool.mypy]
+python_version = "3.10"
+# following setting is same as pysen
+# https://github.com/pfnet/pysen/blob/main/setup.cfg#L12
+check_untyped_defs = true            # 型注釈がない関数やメソッドに対して型チェックを行う
+disallow_any_decorated = false 
+disallow_any_generics = false
+disallow_any_unimported = false
+disallow_incomplete_defs = true      # 型注釈の一部が欠けている関数やメソッドの定義を禁止
+disallow_subclassing_any = true
+disallow_untyped_decorators = true   # 型注釈がないデコレータの使用を禁止
+disallow_untyped_defs = true         # 型注釈がない関数やメソッドの定義を禁止
+ignore_errors = false                # エラーを無視
+ignore_missing_imports = true        # 型チェック対象外のモジュールを無視
+no_implicit_optional = true          # 暗黙のOptionalを禁止
+show_error_codes = true              # エラーコードを表示
+strict_equality = true               # 異なる型同士の比較を禁止
+strict_optional = true               # Noneと他の型の混在を許容しない
+warn_redundant_casts = true          # 不要な型変換に警告
+warn_unreachable = true              # 到達不能なコードに警告
+warn_unused_configs = true           # 使用されていないconfigオプションに警告
+warn_unused_ignores = true           # 使用されていない`# type: ignore`コメントに警告
+disallow_untyped_calls = false       # 型注釈がない関数やメソッドの呼び出しを禁止
+warn_return_any = false              # `Any`型を返す関数やメソッドに警告
+
 [tool.ruff]
-select = ["ALL"]
-ignore = ["D203", "D212"]
+line-length = 79
+target-version = "py310"
+
+[tool.ruff.lint]
 fixable = ["ALL"]
 unfixable = []
-exclude = [".git", ".ruff_cache", ".venv", "language-table"]
-line-length = 79
+select = ["ALL"]
+ignore = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-target-version = "py310"
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 4
 
 [tool.isort]
 profile = "black"
 line_length = 79
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.mypy]
-python_version = "3.10"
-ignore_missing_imports = true

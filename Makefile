@@ -1,18 +1,29 @@
-setup:
-	poetry install --with core,lint
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
+	sort | \
+	awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-download:
-	cd data/raw && \
-	gsutil -m cp \
-		"gs://gresearch/robotics/language_table_blocktoblock_4block_sim/0.0.1/dataset_info.json" \
-		"gs://gresearch/robotics/language_table_blocktoblock_4block_sim/0.0.1/features.json" \
-		$$(printf "gs://gresearch/robotics/language_table_blocktoblock_4block_sim/0.0.1/language_table_blocktoblock_4block_sim-train.tfrecord-%05g " {0..100}) \
-		.
+clean:  ## 実行に影響のないファイル(.*_cacheとか)を削除
+	rm -rf .mypy_cache/ .pytest_cache/ .ruff_cache/ && \
+	rm -f .coverage coverage.xml *.out && \
+	find . -type d -name __pycache__ -exec rm -r {} +
 
-lint:
-	poetry run black . && poetry run isort . && poetry run ruff --fix . && poetry run mypy .
+format:  ## コードのフォーマット(isort->black->ruff)
+	isort . && \
+	black . && \
+	ruff format .
 
-run:
-	poetry run python language_table_dev/main.py
+lint:  ## コードのLint(isort->black->mypy->ruff)
+	isort . --check && \
+	black . --check && \
+	mypy . && \
+	ruff check .
 
-.PHONY: download lint setup run
+setup:  ## 仮想環境の作成
+	rye sync --no-lock && \
+	rye run pre-commit installj
+
+save:  ## make save path=<GCP Path> でデータの保存
+	python src/language_table_dev/save.py --path $(path)
+
+.PHONY: help clean lint format setup
