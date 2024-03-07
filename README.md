@@ -1,6 +1,7 @@
-# [Language-Table [Lynch+ 2023]](https://github.com/google-research/language-table) を使いたい
+# [Language-Table [Lynch+ 2023]](https://github.com/google-research/language-table)を使いたい
 
 ![python](https://img.shields.io/badge/python-3.10-blue)
+[![Rye](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/rye/main/artwork/badge.json)](https://rye-up.com)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 ## References

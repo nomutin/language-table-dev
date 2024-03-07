@@ -1,4 +1,4 @@
-"""Transforms to make `np.ndarray` into `torch.Tensor`.`"""
+"""Transforms to make `np.ndarray` into `torch.Tensor`."""
 
 import numpy as np
 import torch

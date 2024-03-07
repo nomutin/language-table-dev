@@ -11,7 +11,6 @@ from language_table_dev.transform import ActionTransform, ObservationTransform
 
 def save_batch(data_dir: Path) -> None:
     """Save action and observation as `torch.Tensor`."""
-
     action_dir = data_dir / "action"
     observation_dir = data_dir / "observation"
 
@@ -35,7 +34,6 @@ def save_batch(data_dir: Path) -> None:
 
 def split_train_val(data_dir: Path) -> None:
     """Split train and validation data."""
-
     action_dir = data_dir / "action"
     observation_dir = data_dir / "observation"
     train_dir = data_dir / "train"
