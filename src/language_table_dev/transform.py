@@ -1,4 +1,4 @@
-"""Transforms to make `np.ndarray` into `torch.Tensor`."""
+"""Transforms to make `np.ndarray` into `Tensor` for language-table."""
 
 import numpy as np
 import torch
@@ -7,20 +7,20 @@ from typing_extensions import Self
 
 
 class ActionTransform:
-    """Transforms `np.ndarray` action to `torch.Tensor` actgon."""
+    """Transforms `np.ndarray` action to `Tensor` action."""
 
     def __call__(self: Self, action: np.ndarray) -> torch.Tensor:
-        """Normalize and tensorize action."""
+        """Normalize(clamp -1.0~1.0) and tensoring action."""
         action = action + 0.1
         action = action * 5.0
         return torch.from_numpy(action).float()
 
 
 class ObservationTransform:
-    """Transforms `np.ndarray` observation to `torch.Tensor` observation."""
+    """Transforms `np.ndarray` observation to `Tensor` observation."""
 
     def __call__(self: Self, observation: np.ndarray) -> torch.Tensor:
-        """Resize and Padding and tensorize observation."""
+        """Resize and Padding and tensoring observation."""
         observation_tensor = ToTensor()(observation)
         mini_observation = Resize((36, 64))(observation_tensor)
         return Pad((0, 14))(mini_observation)

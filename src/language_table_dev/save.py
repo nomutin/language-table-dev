@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 @click.command()
 @click.option("--path", type=Path)
-def save_sequence(path: str | Path) -> None:
+def save_sequence(path: str) -> None:
     """Save action and observation as `torch.Tensor`."""
     save_dir = Path("data")
 

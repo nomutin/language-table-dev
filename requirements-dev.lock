@@ -27,16 +27,10 @@ charset-normalizer==3.3.2
 click==8.1.7
     # via black
     # via tensorflow-datasets
-contourpy==1.2.0
-    # via matplotlib
-cycler==0.12.1
-    # via matplotlib
 distlib==0.3.8
     # via virtualenv
 dm-tree==0.1.8
     # via tensorflow-datasets
-einops==0.7.0
-    # via language-table-dev
 etils==1.7.0
     # via tensorflow-datasets
 filelock==3.13.1
@@ -44,8 +38,6 @@ filelock==3.13.1
     # via virtualenv
 flatbuffers==24.3.6
     # via tensorflow-macos
-fonttools==4.49.0
-    # via matplotlib
 fsspec==2024.2.0
     # via etils
     # via torch
@@ -76,8 +68,6 @@ jinja2==3.1.3
     # via torch
 keras==2.15.0
     # via tensorflow-macos
-kiwisolver==1.4.5
-    # via matplotlib
 libclang==16.0.6
     # via tensorflow-macos
 markdown==3.5.2
@@ -85,8 +75,6 @@ markdown==3.5.2
 markupsafe==2.1.5
     # via jinja2
     # via werkzeug
-matplotlib==3.8.3
-    # via torchshow
 ml-dtypes==0.2.0
     # via tensorflow-macos
 mpmath==1.3.0
@@ -100,16 +88,13 @@ networkx==3.2.1
 nodeenv==1.8.0
     # via pre-commit
 numpy==1.26.4
-    # via contourpy
     # via etils
     # via h5py
-    # via matplotlib
     # via ml-dtypes
     # via opt-einsum
     # via tensorboard
     # via tensorflow-datasets
     # via tensorflow-macos
-    # via torchshow
     # via torchvision
 oauthlib==3.2.2
     # via requests-oauthlib
@@ -117,12 +102,10 @@ opt-einsum==3.3.0
     # via tensorflow-macos
 packaging==23.2
     # via black
-    # via matplotlib
     # via tensorflow-macos
 pathspec==0.12.1
     # via black
 pillow==10.2.0
-    # via matplotlib
     # via torchvision
 platformdirs==4.2.0
     # via black
@@ -143,10 +126,6 @@ pyasn1==0.5.1
     # via rsa
 pyasn1-modules==0.3.0
     # via google-auth
-pyparsing==3.1.2
-    # via matplotlib
-python-dateutil==2.9.0.post0
-    # via matplotlib
 pyyaml==6.0.1
     # via pre-commit
 requests==2.31.0
@@ -166,7 +145,6 @@ six==1.16.0
     # via astunparse
     # via google-pasta
     # via promise
-    # via python-dateutil
     # via tensorboard
     # via tensorflow-macos
 sympy==1.12
@@ -175,6 +153,8 @@ tensorboard==2.15.2
     # via tensorflow-macos
 tensorboard-data-server==0.7.2
     # via tensorboard
+tensorflow==2.15.0
+    # via language-table-dev
 tensorflow-datasets==4.9.4
     # via language-table-dev
 tensorflow-estimator==2.15.0
@@ -182,7 +162,7 @@ tensorflow-estimator==2.15.0
 tensorflow-io-gcs-filesystem==0.36.0
     # via tensorflow-macos
 tensorflow-macos==2.15.0
-    # via language-table-dev
+    # via tensorflow
 tensorflow-metadata==0.22.2
     # via tensorflow-datasets
 termcolor==2.4.0
@@ -196,8 +176,6 @@ tomli==2.0.1
 torch==2.2.1
     # via language-table-dev
     # via torchvision
-torchshow==0.5.1
-    # via language-table-dev
 torchvision==0.17.1
     # via language-table-dev
 tqdm==4.66.2
