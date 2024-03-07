@@ -21,7 +21,7 @@ lint:  ## コードのLint(isort->black->mypy->ruff)
 
 setup:  ## 仮想環境の作成
 	rye sync --no-lock && \
-	rye run pre-commit installj
+	rye run pre-commit install
 
 save:  ## make save path=<GCP Path> でデータの保存
 	python src/language_table_dev/save.py --path $(path)
