@@ -1,4 +1,4 @@
-# [Language-Table [Lynch+ 2023]](https://github.com/google-research/language-table)を使いたい
+# [Language-Table [Lynch+ 2023]](https://github.com/google-research/language-table) as Pytorch Tensor
 
 ![python](https://img.shields.io/badge/python-3.10-blue)
 [![Rye](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/rye/main/artwork/badge.json)](https://rye-up.com)
@@ -13,30 +13,18 @@
 
 This project uses code/dataset from [Language-Table](https://github.com/google-research/language-table) which is under the Apache License 2.0.
 
-## インストール
+## Usage
 
-1. [Google Cloud SDK](https://www.faq.idcf.jp/app/answers/detail/a_id/941/c/98) のインストール
-
-    ```sh
-    curl https://sdk.cloud.google.com | bash
-    gcloud init
-    ```
-
-2. [Google Cloud](https://console.cloud.google.com/storage/browser/gresearch/robotics/language_table_blocktoblock_sim/0.0.1%3Btab=objects?prefix=&forceOnObjectsSortingFiltering=false&pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))) からプレイデータをダウンロード
-
-    ```sh
-    make download
-    ```
-
-3. 依存関係のインストール
+1. Install dependencies ([rye](https://github.com/astral-sh/rye) required)
 
     ```sh
     make setup
     ```
 
+2. Download the dataset
 
-## 実行
+    See [GCP Paths](https://github.com/google-research/language-table?tab=readme-ov-file#paths).
 
-```sh
-make run
-```
+    ```sh
+    make save path=<GCP Path>
+    ```

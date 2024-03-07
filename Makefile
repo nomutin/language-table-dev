@@ -19,21 +19,10 @@ lint:  ## コードのLint(isort->black->mypy->ruff)
 	mypy . && \
 	ruff check .
 
-test:  ## テストを実行(カバレッジも計測)
-	pytest -ra --cov=src --cov-report=term --cov-report=xml
-
-setup:  # 仮想環境の作成
+setup:  ## 仮想環境の作成
 	rye sync --no-lock
 
-download:
-	cd data/raw && \
-	gsutil -m cp \
-		"gs://gresearch/robotics/language_table_blocktoblock_4block_sim/0.0.1/dataset_info.json" \
-		"gs://gresearch/robotics/language_table_blocktoblock_4block_sim/0.0.1/features.json" \
-		$$(printf "gs://gresearch/robotics/language_table_blocktoblock_4block_sim/0.0.1/language_table_blocktoblock_4block_sim-train.tfrecord-%05g " {0..100}) \
-		.
+save:  ## make save path=<GCP Path> でデータの保存
+	python src/language_table_dev/save.py $(path)
 
-run:
-	poetry run python language_table_dev/main.py
-
-.PHONY: download lint setup run
+.PHONY: help clean lint format setup
