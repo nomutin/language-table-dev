@@ -1,5 +1,6 @@
 """データの前処理・加工."""
 
+import os
 import shutil
 from pathlib import Path
 
@@ -8,8 +9,11 @@ import torch
 import tqdm
 from einops import repeat
 from torch import Tensor
-from torchvision.transforms import Pad, Resize, ToTensor
+from torchvision.transforms import Resize, ToTensor
 from typing_extensions import Self
+
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 
 class ActionTransform:
@@ -26,31 +30,29 @@ class ObservationTransform:
 
     def __call__(self: Self, observation: np.ndarray) -> torch.Tensor:
         """Resize and Padding and tensoring observation."""
-        observation_tensor = ToTensor()(observation)
-        mini_observation = Resize((36, 64))(observation_tensor)
-        return Pad((0, 14))(mini_observation)
+        observation_tensor = ToTensor()(np.array(observation))
+        mini_tensor: Tensor = Resize((36, 64))(observation_tensor)
+        return mini_tensor
 
 
 def pad_length(src_dir: Path, dst_dir: Path, length: int) -> None:
     """長さを`length`にする. `length`以上のデータは消す."""
     dst_dir.mkdir(exist_ok=True)
 
-    action_size = len(list(src_dir.glob("action_*.pt")))
-    observation_size = len(list(src_dir.glob("observation_*.pt")))
-    assert action_size == observation_size
-    data_count = 0
-    for i in tqdm.tqdm(range(action_size)):
-        src_action = src_dir / f"action_{i}.pt"
-        src_observation = src_dir / f"observation_{i}.pt"
-        action = torch.load(src_action)
-        if action.shape[0] >= length:
+    act_size = len(list(src_dir.glob("action_*.pt")))
+    obs_size = len(list(src_dir.glob("observation_*.pt")))
+    assert act_size == obs_size
+    count = 0
+    for i in tqdm.tqdm(range(act_size)):
+        src_act = torch.load(src_dir / f"action_{i}.pt")
+        if src_act.shape[0] >= length:
             continue
-        observation = torch.load(src_observation)
-        dst_action = action_padding(action, length)
-        dst_observation = observation_padding(observation, length)
-        torch.save(dst_action, dst_dir / f"action_{data_count}.pt")
-        torch.save(dst_observation, dst_dir / f"observation_{data_count}.pt")
-        data_count += 1
+        src_obs = torch.load(src_dir / f"observation_{i}.pt")
+        dst_act = action_padding(src_act, length)
+        dst_obs = observation_padding(src_obs, length)
+        torch.save(dst_act.clone(), dst_dir / f"action_{count}.pt")
+        torch.save(dst_obs.clone(), dst_dir / f"observation_{count}.pt")
+        count += 1
 
 
 def action_padding(action: Tensor, length: int) -> Tensor:
@@ -63,9 +65,8 @@ def action_padding(action: Tensor, length: int) -> Tensor:
 def observation_padding(observation: Tensor, length: int) -> Tensor:
     """最後の観測を繰り返して長さを`length`にする."""
     padding_length = length - observation.shape[0]
-    last_observation = observation[-1]
     padding_observation = repeat(
-        last_observation,
+        observation[-1],
         "c h w -> l c h w",
         l=padding_length,
     )
@@ -84,23 +85,15 @@ def split_train_validation(
     val_dir = dst_dir / "validation"
     val_dir.mkdir(exist_ok=True)
 
-    action_size = len(list(src_dir.glob("action_*.pt")))
-    observation_size = len(list(src_dir.glob("observation_*.pt")))
-    assert action_size == observation_size
-
-    data_size = action_size
+    data_size = len(list(src_dir.glob("action_*.pt")))
     train_size = int(data_size * train_ratio)
-    val_size = data_size - train_size
-    assert train_size + val_size == action_size
 
     for i in tqdm.tqdm(range(data_size)):
-        src_action = src_dir / f"action_{i}.pt"
-        src_observation = src_dir / f"observation_{i}.pt"
         if i < train_size:
-            dst_action = train_dir / f"action_{i}.pt"
-            dst_observation = train_dir / f"observation_{i}.pt"
+            dst_act = train_dir / f"action_{i}.pt"
+            dst_obs = train_dir / f"observation_{i}.pt"
         else:
-            dst_action = val_dir / f"action_{i - train_size}.pt"
-            dst_observation = val_dir / f"observation_{i - train_size}.pt"
-        shutil.copy(src_action, dst_action)
-        shutil.copy(src_observation, dst_observation)
+            dst_act = val_dir / f"action_{i - train_size}.pt"
+            dst_obs = val_dir / f"observation_{i - train_size}.pt"
+        shutil.copy(src_dir / f"action_{i}.pt", dst_act)
+        shutil.copy(src_dir / f"observation_{i}.pt", dst_obs)
