@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING
 import click
 import torch
 
+from language_table_dev.process import ActionTransform, ObservationTransform
 from language_table_dev.tf import episode_generator
-from language_table_dev.transform import ActionTransform, ObservationTransform
 
 if TYPE_CHECKING:
     import numpy as np

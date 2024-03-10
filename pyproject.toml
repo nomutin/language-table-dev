@@ -10,6 +10,7 @@ dependencies = [
     "torchvision>=0.17.1",
     "tensorflow-cpu @ https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.15.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
     "tensorflow-datasets>=4.9.4",
+    "einops>=0.7.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
@@ -67,13 +68,18 @@ line-length = 79
 target-version = "py310"
 
 [tool.ruff.lint]
+preview = true
 fixable = ["ALL"]
 unfixable = []
 select = ["ALL"]
-ignore = []
+ignore = [
+    "CPY001",  # Missing copyright notice at top of file
+    "S101",    # Use of assert detected
+]
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.format]
+preview = true
 docstring-code-format = true
 
 [tool.ruff.lint.pydocstyle]

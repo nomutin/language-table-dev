@@ -28,6 +28,8 @@ click==8.1.7
     # via tensorflow-datasets
 dm-tree==0.1.8
     # via tensorflow-datasets
+einops==0.7.0
+    # via language-table-dev
 etils==1.7.0
     # via array-record
     # via tensorflow-datasets

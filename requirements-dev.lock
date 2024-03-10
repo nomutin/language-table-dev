@@ -34,6 +34,8 @@ distlib==0.3.8
     # via virtualenv
 dm-tree==0.1.8
     # via tensorflow-datasets
+einops==0.7.0
+    # via language-table-dev
 etils==1.7.0
     # via array-record
     # via tensorflow-datasets
