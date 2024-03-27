@@ -68,14 +68,10 @@ line-length = 79
 target-version = "py310"
 
 [tool.ruff.lint]
-preview = true
 fixable = ["ALL"]
 unfixable = []
 select = ["ALL"]
-ignore = [
-    "CPY001",  # Missing copyright notice at top of file
-    "S101",    # Use of assert detected
-]
+ignore = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.format]
@@ -84,9 +80,6 @@ docstring-code-format = true
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
-
-[tool.ruff.lint.mccabe]
-max-complexity = 4
 
 [tool.isort]
 profile = "black"

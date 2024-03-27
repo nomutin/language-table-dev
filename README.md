@@ -13,19 +13,3 @@
 ## Credits
 
 This project uses code/dataset from [Language-Table](https://github.com/google-research/language-table) which is under the Apache License 2.0.
-
-## Usage
-
-1. Install dependencies ([rye](https://github.com/astral-sh/rye) required)
-
-    ```sh
-    make setup
-    ```
-
-2. Download the dataset
-
-    See [GCP Paths](https://github.com/google-research/language-table?tab=readme-ov-file#paths).
-
-    ```sh
-    make save path=<GCP Path>
-    ```

@@ -9,7 +9,7 @@ import torch
 import tqdm
 from einops import repeat
 from torch import Tensor
-from torchvision.transforms import Resize, ToTensor
+from torchvision.transforms import Pad, Resize, ToTensor
 from typing_extensions import Self
 
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
@@ -17,42 +17,36 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 
 class ActionTransform:
-    """Transforms `np.ndarray` action to `Tensor` action."""
+    """
+    行動の`np.ndarray`を正規化し、`torch.Tensor`に変換する.
+
+    NOTE
+    ----
+    元の関節角度が-0.1~0.1なので、10倍して-1.0~1.0に正規化する.
+    """
 
     def __call__(self: Self, action: np.ndarray) -> torch.Tensor:
-        """Normalize(clamp -1.0~1.0) and tensoring action."""
+        """正規化・テンソルへの変換を行う."""
         action = action * 10.0
         return torch.from_numpy(action).float()
 
 
 class ObservationTransform:
-    """Transforms `np.ndarray` observation to `Tensor` observation."""
+    """観測の`np.ndarray`をリサイズし、`torch.Tensor`に変換する."""
 
-    def __call__(self: Self, observation: np.ndarray) -> torch.Tensor:
+    def __init__(self: Self, factor: float, pad_size: tuple) -> None:
+        self.to_tensor = ToTensor()
+        org_height, org_width = 360, 640
+        new_size = int(org_height * factor), int(org_width * factor)
+        self.minify = Resize(new_size)
+        self.pad = Pad(pad_size)
+
+    def __call__(self: Self, observation: np.ndarray) -> Tensor:
         """Resize and Padding and tensoring observation."""
-        observation_tensor = ToTensor()(np.array(observation))
-        mini_tensor: Tensor = Resize((36, 64))(observation_tensor)
-        return mini_tensor
-
-
-def pad_length(src_dir: Path, dst_dir: Path, length: int) -> None:
-    """長さを`length`にする. `length`以上のデータは消す."""
-    dst_dir.mkdir(exist_ok=True)
-
-    act_size = len(list(src_dir.glob("action_*.pt")))
-    obs_size = len(list(src_dir.glob("observation_*.pt")))
-    assert act_size == obs_size
-    count = 0
-    for i in tqdm.tqdm(range(act_size)):
-        src_act = torch.load(src_dir / f"action_{i}.pt")
-        if src_act.shape[0] >= length:
-            continue
-        src_obs = torch.load(src_dir / f"observation_{i}.pt")
-        dst_act = action_padding(src_act, length)
-        dst_obs = observation_padding(src_obs, length)
-        torch.save(dst_act.clone(), dst_dir / f"action_{count}.pt")
-        torch.save(dst_obs.clone(), dst_dir / f"observation_{count}.pt")
-        count += 1
+        tensor = self.to_tensor(observation)
+        mini_tensor: Tensor = self.minify(tensor)
+        padded_tensor: Tensor = self.pad(mini_tensor)
+        return padded_tensor
 
 
 def action_padding(action: Tensor, length: int) -> Tensor:
@@ -97,3 +91,9 @@ def split_train_validation(
             dst_obs = val_dir / f"observation_{i - train_size}.pt"
         shutil.copy(src_dir / f"action_{i}.pt", dst_act)
         shutil.copy(src_dir / f"observation_{i}.pt", dst_obs)
+
+
+if __name__ == "__main__":
+    src_dir = Path("data")
+    dst_dir = Path("language_table_blocktoblock_4block_sim")
+    split_train_validation(src_dir, dst_dir, train_ratio=0.9)
